@@ -8,3 +8,4 @@ max_hamming_dist: 2
 
 publish_tf: true
 transport_hint: "raw"
+publish_tag_detections_image: true

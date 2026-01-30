@@ -41,6 +41,15 @@ roslaunch d435i_apriltag_csv fixed_and_moving_tag_relative_csv.launch use_rviz:=
 - `alpha`：指数平滑系数（默认 0.1，越小越稳但越慢）
 - `write_raw`：是否在 CSV 里追加原始未滤波数据（默认 false）
 
+### 4) Tag 框框可视化（RViz）
+
+已启用 apriltag_ros 的检测图像输出，RViz 默认增加一个 `Tag Detections` 图像显示：
+
+- 话题：`/tag_detections_image`
+- 说明：该话题是带检测框叠加的图像
+
+如果你只想看带框图像，可以在 RViz 里关闭 `Camera` 显示，仅保留 `Tag Detections`。
+
 示例（覆盖参数）：
 
 ```bash

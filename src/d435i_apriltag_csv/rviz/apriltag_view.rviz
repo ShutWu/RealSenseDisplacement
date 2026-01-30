@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /TF
         - /Camera
+        - /Tag Detections
       Splitter Ratio: 0.5
     Tree Height: 549
   - Class: rviz/Selection
@@ -43,6 +44,13 @@ Visualization Manager:
       Enabled: true
       Image Topic: /camera/color/image_rect_color
       Name: Camera
+      Normalize Range: true
+      Queue Size: 2
+      Transport Hint: raw
+    - Class: rviz/Image
+      Enabled: true
+      Image Topic: /tag_detections_image
+      Name: Tag Detections
       Normalize Range: true
       Queue Size: 2
       Transport Hint: raw
