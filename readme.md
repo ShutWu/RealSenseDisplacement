@@ -31,6 +31,15 @@ roslaunch d435i_apriltag_csv fixed_and_moving_tag_relative_csv.launch use_rviz:=
 - `rviz_wait_topic`：等待的图像话题（默认 `/camera/color/image_rect_color`）
 - `rviz_wait_timeout`：等待话题超时秒数（默认 10.0，超时仍会启动 RViz）
 - `rviz_initial_delay`：启动前额外延迟（秒，默认 0.0）
+- `enable_static_ref`：启动后标定一次并发布固定参考帧（默认 true）
+- `fixed_frame_ref`：标定后的参考帧名称（默认 `tag_0_ref`）
+- `camera_frame`：相机光学坐标系（默认 `camera_color_optical_frame`）
+- `calib_duration`：标定采样时长（秒，默认 2.0）
+- `calib_samples`：标定最大采样帧数（默认 60）
+- `calib_timeout`：单次 TF 等待超时（秒，默认 0.1）
+- `median_window`：中值滤波窗口大小（默认 7，设为 1 关闭）
+- `alpha`：指数平滑系数（默认 0.1，越小越稳但越慢）
+- `write_raw`：是否在 CSV 里追加原始未滤波数据（默认 false）
 
 示例（覆盖参数）：
 

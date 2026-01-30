@@ -14,6 +14,19 @@
   <arg name="fixed_tag_frame"  default="tag_0" />
   <arg name="moving_tag_frame" default="tag_1" />
 
+  <!-- Static reference calibration -->
+  <arg name="enable_static_ref" default="true" />
+  <arg name="fixed_frame_ref" default="tag_0_ref" />
+  <arg name="camera_frame" default="camera_color_optical_frame" />
+  <arg name="calib_duration" default="2.0" />
+  <arg name="calib_samples" default="60" />
+  <arg name="calib_timeout" default="0.1" />
+
+  <!-- Filtering -->
+  <arg name="median_window" default="7" />
+  <arg name="alpha" default="0.1" />
+  <arg name="write_raw" default="false" />
+
   <!-- Output CSV path -->
   <arg name="csv_path" default="$(find d435i_apriltag_csv)/../../output/tag_relative.csv" />
 
@@ -54,6 +67,15 @@
     <param name="moving_frame" value="$(arg moving_tag_frame)" />
     <param name="output_csv" value="$(arg csv_path)" />
     <param name="rate_hz" value="$(arg color_fps)" />
+    <param name="enable_static_ref" value="$(arg enable_static_ref)" />
+    <param name="fixed_frame_ref" value="$(arg fixed_frame_ref)" />
+    <param name="camera_frame" value="$(arg camera_frame)" />
+    <param name="calib_duration" value="$(arg calib_duration)" />
+    <param name="calib_samples" value="$(arg calib_samples)" />
+    <param name="calib_timeout" value="$(arg calib_timeout)" />
+    <param name="median_window" value="$(arg median_window)" />
+    <param name="alpha" value="$(arg alpha)" />
+    <param name="write_raw" value="$(arg write_raw)" />
   </node>
 
   <!-- ========= 4) RViz (delayed) ========= -->
