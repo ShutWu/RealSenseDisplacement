@@ -20,6 +20,9 @@
   <!-- RViz visualization -->
   <arg name="use_rviz" default="true" />
   <arg name="rviz_config" default="$(find d435i_apriltag_csv)/rviz/apriltag_view.rviz" />
+  <arg name="rviz_wait_topic" default="/camera/color/image_rect_color" />
+  <arg name="rviz_wait_timeout" default="10.0" />
+  <arg name="rviz_initial_delay" default="0.0" />
 
   <!-- ========= 0) (Optional) Start RealSense ========= -->
   <group if="$(arg start_camera)">
@@ -53,7 +56,11 @@
     <param name="rate_hz" value="$(arg color_fps)" />
   </node>
 
-  <!-- ========= 4) RViz ========= -->
-  <node if="$(arg use_rviz)" pkg="rviz" type="rviz" name="rviz" output="screen"
-        args="-d $(arg rviz_config)" />
+  <!-- ========= 4) RViz (delayed) ========= -->
+  <node if="$(arg use_rviz)" pkg="d435i_apriltag_csv" type="rviz_delayed_start.py" name="rviz_delayed_start" output="screen">
+    <param name="rviz_config" value="$(arg rviz_config)" />
+    <param name="wait_topic" value="$(arg rviz_wait_topic)" />
+    <param name="wait_timeout" value="$(arg rviz_wait_timeout)" />
+    <param name="initial_delay" value="$(arg rviz_initial_delay)" />
+  </node>
 </launch>

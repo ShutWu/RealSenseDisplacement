@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   apriltag_ros
   geometry_msgs
   rospy
+  sensor_msgs
   std_msgs
 )
 

@@ -28,6 +28,9 @@ roslaunch d435i_apriltag_csv fixed_and_moving_tag_relative_csv.launch use_rviz:=
 - `rate_hz`：写入频率（默认 30Hz）
 - `use_rviz`：是否启动 RViz（默认 true）
 - `rviz_config`：RViz 配置文件路径（默认 `d435i_apriltag_csv/rviz/apriltag_view.rviz`）
+- `rviz_wait_topic`：等待的图像话题（默认 `/camera/color/image_rect_color`）
+- `rviz_wait_timeout`：等待话题超时秒数（默认 10.0，超时仍会启动 RViz）
+- `rviz_initial_delay`：启动前额外延迟（秒，默认 0.0）
 
 示例（覆盖参数）：
 
@@ -39,3 +42,7 @@ roslaunch d435i_apriltag_csv fixed_and_moving_tag_relative_csv.launch \
 	rate_hz:=15
 ```
 
+### 3)如果只想开相机：
+```bash
+roslaunch realsense2_camera rs_camera.launch   enable_color:=true enable_depth:=true   align_depth:=true   color_width:=1280 color_height:=720 color_fps:=30
+```
