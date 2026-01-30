@@ -1,0 +1,41 @@
+### 1) 启动 AprilTag + TF 发布（已有 launch）
+
+在已经能发布 `fixed_frame` 与 `moving_frame` 的 TF 前提下，直接运行：
+
+```bash
+# 在工作区根目录执行（默认会同时打开 RViz）
+roslaunch d435i_apriltag_csv fixed_and_moving_tag_relative_csv.launch
+```
+
+如果不需要 RViz，可以关闭：
+
+```bash
+roslaunch d435i_apriltag_csv fixed_and_moving_tag_relative_csv.launch use_rviz:=false
+```
+
+### 2) 输出 CSV 文件
+
+- 默认输出路径：`<workspace>/output/tag_relative.csv`（与 `src/` 同级）
+- 表头字段：`stamp_sec, fixed_frame, moving_frame, x_m, y_m, z_m, range_m`
+
+### 3) 常用参数（可覆盖）
+
+该脚本读取以下 ROS 参数（可在 launch 中覆盖）：
+
+- `fixed_frame`：固定坐标系（默认 `tag_fixed`）
+- `moving_frame`：被测坐标系（默认 `tag_obj`）
+- `csv_path` / `output_csv`：CSV 输出路径（默认 `<workspace>/output/tag_relative.csv`）
+- `rate_hz`：写入频率（默认 30Hz）
+- `use_rviz`：是否启动 RViz（默认 true）
+- `rviz_config`：RViz 配置文件路径（默认 `d435i_apriltag_csv/rviz/apriltag_view.rviz`）
+
+示例（覆盖参数）：
+
+```bash
+roslaunch d435i_apriltag_csv fixed_and_moving_tag_relative_csv.launch \
+	csv_path:=$(pwd)/output/tag_relative.csv \
+	fixed_frame:=tag_1 \
+	moving_frame:=tag_2 \
+	rate_hz:=15
+```
+

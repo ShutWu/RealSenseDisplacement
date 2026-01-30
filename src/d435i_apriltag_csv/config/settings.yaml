@@ -1,0 +1,10 @@
+# ~/catkin_ws/src/d435i_apriltag_csv/config/settings.yaml
+tag_family: "tag36h11"
+tag_threads: 2
+tag_decimate: 1.0
+tag_blur: 0.0
+tag_refine_edges: 1
+max_hamming_dist: 2
+
+publish_tf: true
+transport_hint: "raw"

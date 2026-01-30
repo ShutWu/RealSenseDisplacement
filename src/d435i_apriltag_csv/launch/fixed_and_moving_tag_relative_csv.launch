@@ -1,0 +1,59 @@
+<!-- d435i_apriltag_csv/launch/fixed_and_moving_tag_relative_csv.launch -->
+<launch>
+  <!-- ========= User-configurable args ========= -->
+  <!-- Whether to start RealSense camera inside this launch. If you already started the camera, set false. -->
+  <arg name="start_camera" default="true" />
+
+  <!-- Camera stream settings -->
+  <arg name="color_width"  default="1280" />
+  <arg name="color_height" default="720" />
+  <arg name="color_fps"    default="30" />
+  <arg name="align_depth"  default="true" />
+
+  <!-- Tag frames (must match the 'name' fields in config/tags.yaml) -->
+  <arg name="fixed_tag_frame"  default="tag_0" />
+  <arg name="moving_tag_frame" default="tag_1" />
+
+  <!-- Output CSV path -->
+  <arg name="csv_path" default="$(find d435i_apriltag_csv)/../../output/tag_relative.csv" />
+
+  <!-- RViz visualization -->
+  <arg name="use_rviz" default="true" />
+  <arg name="rviz_config" default="$(find d435i_apriltag_csv)/rviz/apriltag_view.rviz" />
+
+  <!-- ========= 0) (Optional) Start RealSense ========= -->
+  <group if="$(arg start_camera)">
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+      <arg name="enable_color" value="true" />
+      <arg name="enable_depth" value="true" />
+      <arg name="align_depth"  value="$(arg align_depth)" />
+
+      <arg name="color_width"  value="$(arg color_width)" />
+      <arg name="color_height" value="$(arg color_height)" />
+      <arg name="color_fps"    value="$(arg color_fps)" />
+    </include>
+  </group>
+
+  <!-- ========= 1) Rectify color image to get /camera/color/image_rect_color ========= -->
+  <node pkg="image_proc" type="image_proc" name="image_proc" ns="/camera/color" output="screen" />
+
+  <!-- ========= 2) AprilTag continuous detection ========= -->
+  <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag" clear_params="true" output="screen">
+    <remap from="image_rect"  to="/camera/color/image_rect_color" />
+    <remap from="camera_info" to="/camera/color/camera_info" />
+    <rosparam command="load" file="$(find d435i_apriltag_csv)/config/settings.yaml" />
+    <rosparam command="load" file="$(find d435i_apriltag_csv)/config/tags.yaml" />
+  </node>
+
+  <!-- ========= 3) Log relative translation (fixed_tag -> moving_tag) to CSV ========= -->
+  <node pkg="d435i_apriltag_csv" type="tag_relative_to_csv.py" name="tag_relative_to_csv" output="screen">
+    <param name="fixed_frame" value="$(arg fixed_tag_frame)" />
+    <param name="moving_frame" value="$(arg moving_tag_frame)" />
+    <param name="output_csv" value="$(arg csv_path)" />
+    <param name="rate_hz" value="$(arg color_fps)" />
+  </node>
+
+  <!-- ========= 4) RViz ========= -->
+  <node if="$(arg use_rviz)" pkg="rviz" type="rviz" name="rviz" output="screen"
+        args="-d $(arg rviz_config)" />
+</launch>

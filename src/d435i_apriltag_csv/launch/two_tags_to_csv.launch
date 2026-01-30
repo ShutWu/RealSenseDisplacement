@@ -1,0 +1,26 @@
+<!-- ~/catkin_ws/src/d435i_apriltag_csv/launch/two_tags_to_csv.launch -->
+<launch>
+  <!-- 你的相机 topic 前缀是 /camera/color/... -->
+  <arg name="csv_path" default="$(env HOME)/apriltag_xyz.csv" />
+
+  <!-- 1) 用 image_proc 生成 rectified 图像（apriltag_ros 默认吃 image_rect） -->
+  <node pkg="image_proc" type="image_proc" name="image_proc" ns="/camera/color" output="screen" />
+
+  <!-- 2) AprilTag 连续检测节点 -->
+  <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag" clear_params="true" output="screen">
+    <!-- apriltag_ros 代码里用的 topic 名是 image_rect / camera_info，所以这里 remap 到你的相机 -->
+    <remap from="image_rect"  to="/camera/color/image_rect_color" />
+    <remap from="camera_info" to="/camera/color/camera_info" />
+
+    <rosparam command="load" file="$(find d435i_apriltag_csv)/config/settings.yaml" />
+    <rosparam command="load" file="$(find d435i_apriltag_csv)/config/tags.yaml" />
+  </node>
+
+  <!-- 3) 导出CSV -->
+  <node pkg="d435i_apriltag_csv" type="tag_to_csv.py" name="tag_to_csv" output="screen">
+    <param name="output_csv" value="$(arg csv_path)" />
+    <param name="detections_topic" value="/tag_detections" />
+    <param name="tag_ids" value="[0, 1]" />
+    <param name="flush_every" value="10" />
+  </node>
+</launch>
