@@ -15,7 +15,7 @@ roslaunch d435i_apriltag_csv fixed_and_moving_tag_relative_csv.launch use_rviz:=
 
 ### 2) 输出 CSV 文件
 
-- 默认输出路径：`<workspace>/output/tag_relative.csv`（与 `src/` 同级）
+- 默认输出路径：`<workspace>/output/tag_relative.csv`（与 `src/` 同级，启动时会覆盖写入）
 - 表头字段：`stamp_sec, fixed_frame, moving_frame, x_m, y_m, z_m, range_m`
 
 ### 3) 常用参数（可覆盖）

@@ -87,15 +87,12 @@ def main():
     rate_hz = float(rospy.get_param("~rate_hz", 30.0))
 
     os.makedirs(os.path.dirname(out_csv), exist_ok=True)
-    f_exists = os.path.exists(out_csv) and os.path.getsize(out_csv) > 0
-
-    f = open(out_csv, "a", newline="")
+    f = open(out_csv, "w", newline="")
     w = csv.writer(f)
-    if not f_exists:
-        header = ["stamp_sec", "fixed_frame", "moving_frame", "x_m", "y_m", "z_m", "range_m"]
-        if write_raw:
-            header += ["raw_x_m", "raw_y_m", "raw_z_m", "raw_range_m"]
-        w.writerow(header)
+    header = ["stamp_sec", "fixed_frame", "moving_frame", "x_m", "y_m", "z_m", "range_m"]
+    if write_raw:
+        header += ["raw_x_m", "raw_y_m", "raw_z_m", "raw_range_m"]
+    w.writerow(header)
 
     buf = tf2_ros.Buffer(cache_time=rospy.Duration(10.0))
     tf2_ros.TransformListener(buf)
